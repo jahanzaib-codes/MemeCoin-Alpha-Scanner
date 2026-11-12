@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  alpha-scanner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: memecoin-alpha-scanner
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}
+      - BASE_RPC_URL=${BASE_RPC_URL:-https://mainnet.base.org}
+      - MIN_LIQUIDITY_USD=${MIN_LIQUIDITY_USD:-5000}
+      - MAX_DEV_HOLDING_PCT=${MAX_DEV_HOLDING_PCT:-15.0}
+      - MIN_SMART_MONEY_INFLOW=${MIN_SMART_MONEY_INFLOW:-2500.0}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    command: ["scan"]
